@@ -11,7 +11,7 @@
         <p>
             <a class="btn btn-primary btn-sm" href="{% url 'detail' item.pk %}" role="button">詳細</a>
             <a class="btn btn-success btn-sm" href="" role="button">編集</a>
-            <a class="btn btn-danger btn-sm" href="" role="button">削除</a>
+            <a class="btn btn-danger btn-sm" href="{% url 'delete' item.pk %}" role="button">削除</a>
         </p>
     </div>
 </div>

@@ -811,7 +811,7 @@ git push origin --all
 
 #### ルーティング設定
 
-VS-Codeで編集todo/urls.pyの編集
+VS-Codeで編集 todo/urls.py の編集
 
 1. from import文に`TodoDetail`を追加
 2. urlpatternsに` path('detail/<int:pk>', TodoDetail.as_view(), name='detail'),`を追加
@@ -827,9 +827,9 @@ urlpatterns = [
 ]
 ```
 
-
-
 #### views.pyでクラス定義
+
+VS-Codeで編集 todo/views.py の編集
 
 1. from django.views.generic import文に DetailViewを追加
 2. class TodoDetail(DetailView):定義
@@ -927,10 +927,110 @@ git checkout master
 git push origin --all
 ```
 
+### 削除機能の作成
 
+#### ルーティング設定
 
+VS-Codeで編集 todo/urls.py の編集
 
+```
+from django.urls import path
+from .views import TodoList, TodoDetail, TodoDelete
 
+urlpatterns = [
+    path('', TodoList.as_view(), name='list'),
+    path('detail/<int:pk>', TodoDetail.as_view(), name='detail'),
+    path('delete/<int:pk>', TodoDelete.as_view(), name='delete'),
+]
+```
 
+#### views.pyでクラス定義
 
+VS-Codeで編集 todo/views.py の編集
 
+```
+from django.shortcuts import render, redirect
+from django.db import IntegrityError
+from django.views.generic import ListView, DetailView, DeleteView
+from .models import TodoModel
+from django.http import HttpResponse
+from django.urls import reverse_lazy
+ 
+ 
+class TodoList(ListView):
+    template_name = 'index.html'
+    model = TodoModel
+ 
+ 
+class TodoDetail(DetailView):
+    template_name = 'detail.html'
+    model = TodoModel
+ 
+ 
+class TodoDelete(DeleteView):
+    template_name = 'delete.html'
+    model = TodoModel
+    success_url = reverse_lazy('list')
+ 
+```
+
+### 削除ボタンのリンク作成
+
+index.htmlの削除ボタンのリンク設定を入れます。
+
+```
+<a class="btn btn-danger btn-sm" href="{% url 'delete' item.pk %}" role="button">削除</a>
+```
+
+### 削除用テンプレート
+
+VS-Codeでtemplates/delete.htmlの新規作成
+
+delete.htmlを新規作成して以下コードを記述
+
+```
+{% extends 'base.html' %} {% block header %}
+<div class="jumbotron text-center">
+    <h1 class="display-4"><a href="{% url 'list' %}">TodoList</a></h1>
+    <p class="lead">This is a simple TodoList.</p>
+</div>
+{% endblock header %} {% block content %} 
+<p>選択したタスクを削除します。</p>
+<form action="" method="POST">{% csrf_token %}
+    <input type="submit" value="削除します">
+</form>
+<p class="text-center"><a class="btn btn-outline-primary" href="{% url 'list' %}" role="button">戻る</a></p>
+{% endblock content %}
+```
+
+### サーバーの稼働
+
+ここで一旦表示の確認をします。
+
+runserverを稼働させます。
+
+```
+python manage.py runserver
+```
+
+削除機能の確認をします。
+
+### Git 「no5_todo」　branch作成
+
+```
+git add .
+git commit
+git checkout -b no5_todo
+```
+
+pushが終わったらmainにブランチを戻します。
+
+```
+git checkout master
+```
+
+全てのローカルリポジトリをpushする方法
+
+```
+git push origin --all
+```
