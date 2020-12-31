@@ -532,7 +532,7 @@ admin.site.register(TodoModel)
 
 ターミナルまたはパワーシェルで次の操作
 
-runserverを稼働させて、admin画面に入りエラーが出ないか確認します。
+runserverを稼働させます。
 
 ```
 python manage.py runserver
@@ -767,6 +767,16 @@ VS-Codeで index.htmlを以下内容に変更します。
 {% endfor %} {% endblock content %}
 ```
 
+### サーバーの稼働
+
+ここで一旦表示の確認をします。
+
+runserverを稼働させます。
+
+```
+python manage.py runserver
+```
+
 クラス名を追加しただけで驚くほど綺麗になったと思います。
 
 
@@ -797,9 +807,125 @@ git checkout master
 git push origin --all
 ```
 
+### 詳細画面の作成
+
+#### ルーティング設定
+
+VS-Codeで編集todo/urls.pyの編集
+
+1. from import文に`TodoDetail`を追加
+2. urlpatternsに` path('detail/<int:pk>', TodoDetail.as_view(), name='detail'),`を追加
+   `<int:pk>`がポイント
+
+```
+from django.urls import path
+from .views import TodoList, TodoDetail
+ 
+urlpatterns = [
+    path('', TodoList.as_view(), name='list'),
+    path('detail/<int:pk>', TodoDetail.as_view(), name='detail'),
+]
+```
 
 
 
+#### views.pyでクラス定義
+
+1. from django.views.generic import文に DetailViewを追加
+2. class TodoDetail(DetailView):定義
+
+```
+from django.shortcuts import render, redirect
+from django.db import IntegrityError
+from django.views.generic import ListView, DetailView
+from .models import TodoModel
+from django.http import HttpResponse
+ 
+ 
+class TodoList(ListView):
+    template_name = 'index.html'
+    model = TodoModel
+ 
+ 
+class TodoDetail(DetailView):
+    template_name = 'detail.html'
+    model = TodoModel
+```
+
+### index.htmlの変更
+
+index.htmlは詳細リンクのhref属性に値を入れます。`{% url 'detail' item.pk %}`
+
+index.htm
+
+```
+<p>
+<a class="btn btn-primary btn-sm" href="{% url 'detail' item.pk %}" role="button">詳細</a>
+     <a class="btn btn-success btn-sm" href="" role="button">編集</a>
+     <a class="btn btn-danger btn-sm" href="" role="button">削除</a>
+</p>
+```
+
+#### 詳細画面のテンプレート作成
+
+VS-Codeでtemplates/detail.htmlの新規作成
+
+detail.htmlを新規作成して以下コードを記述
+
+```
+{% extends 'base.html' %}
+{% block header %}
+<div class="jumbotron text-center">
+  <h1 class="display-4"><a href="{% url 'list' %}">TodoList</a></h1>
+  <p class="lead">This is a simple TodoList.</p>
+</div>
+{% endblock header %}
+{% block content %}
+<div class="alert alert-primary" role="alert">
+  <p><span>タイトル：</span>{{ object.title }}</p>
+  <p><span>内容：</span>{{ object.memo }}</p>
+  <p><span>期日：</span>{{ object.duedate }}</p>
+</div>
+<p class="text-center"><a class="btn btn-outline-primary" href="{% url 'list' %}" role="button">戻る</a></p>
+{% endblock content %}
+```
+
+### サーバーの稼働
+
+ここで一旦表示の確認をします。
+
+runserverを稼働させます。
+
+```
+python manage.py runserver
+```
+
+詳細画面の確認をします。
+
+### Git 「no4_todo」　branch作成
+
+```
+git add .
+```
+
+```
+git commit
+```
+
+```
+git checkout -b no4_todo
+```
+
+pushが終わったらmainにブランチを戻します。
+
+```
+git checkout master
+```
+全てのローカルリポジトリをpush
+
+```
+git push origin --all
+```
 
 
 
