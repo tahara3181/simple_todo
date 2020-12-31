@@ -166,13 +166,14 @@ import os
 
 #### シークレットキーの設定
 
-1. シークレットキーの情報をコピーして保存
+1. シークレットキーの情報をコピーして保存(この記述はサンプルです。自分の本当の値をコピーすること)
 
    ```
    SECRET_KEY = 'ei!mmcb3n(me^ww$&9xz3$r^xf+75_8^2x6_&38)^dti6338-t$=s'
    ```
 
 2. シークレットキーの情報を環境変数に隠蔽
+   環境変数の取り扱いは別途手順書を参照
 
 ```
 SECRET_KEY = os.environ.get('SECRET_KEY_TODO')
@@ -213,7 +214,7 @@ source bin/activate
    Scripts\activate
    ```
 
-   ### 
+   
 
 #### アプリの指定
 
@@ -383,7 +384,7 @@ def todo(request):
 
 ### サーバーの稼働
 
-runserverを稼働させて、admin画面に入りエラーが出ないか確認します。
+runserverを稼働させます。
 
 ```
 python manage.py runserver
