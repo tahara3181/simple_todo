@@ -4,6 +4,8 @@
 
 ## 仮想環境作成(venv)
 
+ターミナルまたはパワーシェルで次の操作
+
 1. 仮想環境  `venv` 作成のためのコマンド  
 注意：Macの場合は python3としてください。
 
@@ -76,8 +78,9 @@ pip -V
 
 
 
-
 ## Djangoのインストール
+
+ターミナルまたはパワーシェルで次の操作
 
 Djangoインストールコマンド  
 
@@ -94,6 +97,8 @@ python -m django --version
 
 
 ## TODOプロジェクト作成
+
+ターミナルまたはパワーシェルで次の操作
 
 1.  `venv` 仮想フォルダの中にプロジェクト用の新しいフォルダ「TODOPROJECT」を作成
 
@@ -113,7 +118,8 @@ django-admin startproject todoproject .
 
 ### アプリケーションの作成
 
-1. アプリケーション作成コマンド  
+1. アプリケーション作成コマンド 
+   ターミナルまたはパワーシェルで次の操作 
 
 ```
 python manage.py startapp todo
@@ -139,6 +145,8 @@ static/
 ```
 
 以下コマンドを実行
+
+ターミナルまたはパワーシェルで次の操作
 
 ```
 git init
@@ -283,8 +291,9 @@ TIME_ZONE = 'Asia/Tokyo'
 #### staticフォルダ作成
 
 1. cssや画像などを保存するために、static という名前のフォルダをTODOPROJECTフォルダ内に作成
-
 2. settings.pyの最後の`STATIC_URL = '/static/'` の次に下記記述
+
+VS-Codeで編集
 
 settings.py
 
@@ -339,6 +348,8 @@ https://www.startlab-classroom.com/5/static.zip
 
 #### プロジェクトのurls.pyを編集
 
+VS-Codeで編集
+
 1. todoproject/urls.pyの編集
    1. `path('', include('todo.urls')),` を追加
    2. from import文にincludeの追加
@@ -355,6 +366,8 @@ urlpatterns = [
 
 #### アプリのurls.pyを編集
 
+VS-Codeで編集
+
 1. todoフォルダに `urls.py` を新規作成（アプリのurls.pyは自動で作成されないので注意）
 2. todo/urls.pyに以下コードを追加
 
@@ -368,6 +381,8 @@ urlpatterns = [
 ```
 
 ### views.pyの編集
+
+VS-Codeで編集
 
 関数ベースビューを `views.py` に作成（Hello!と表示するためのもの）
 
@@ -385,6 +400,8 @@ def todo(request):
 ### サーバーの稼働
 
 runserverを稼働させます。
+
+ターミナルまたはパワーシェルで次の操作
 
 ```
 python manage.py runserver
@@ -405,6 +422,8 @@ ctrl + c キーでサーバーを停止
 ここまでの内容を新しいブランチにします。ブランチ名は「no1_todo」とします。
 
 Gitコマンドは以下
+
+ターミナルまたはパワーシェルで次の操作
 
 ```
 git add .
@@ -442,42 +461,24 @@ git push -u origin HEAD
 
 
 
-.gitignoreファイルにstaticを指定してない場合は、statcが重すぎてpushできないことがあります。
-
-その場合は次のようにします。
-
-```
-git config http.postBuffer 10485760
-```
-
-
-
 ## データベースの設定
 
 ### models.pyの編集
+
+VS-Codeで作業
 
 1. `models.py` の `class` を活用してテーブルを作成します。
    以下コードで、from import文以外のコードを貼り付ける
 
 ```
 from django.db import models
-
-
-PRIORITY = (('danger', 'high'), ('info', 'normal'), ('success', 'low'))
-
-
+ 
+ 
 class TodoModel(models.Model):
     title = models.CharField(max_length=100)
     memo = models.TextField()
-    auther = models.CharField(max_length=100)
-    priority = models.CharField(
-        max_length=50,
-        choices=PRIORITY,
-    )
-    progress = models.PositiveSmallIntegerField()
     duedate = models.DateField()
-    complete = models.BooleanField()
-
+ 
     def __str__(self):
         return self.title
 ```
@@ -485,6 +486,8 @@ class TodoModel(models.Model):
 
 
 #### makemigrationsとmigrateコマンドの実行
+
+ターミナルまたはパワーシェルで次の操作
 
 1. makemigrationsコマンド
 
@@ -498,23 +501,26 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
-OKが沢山出たら次へ進む
+OKがたくさん出たら完了
 
-### admin画面からテストデータの入力
+### スーパーユーザー作成
 
-1. superuserを作成は次のコマンド
+ターミナルまたはパワーシェルで次の操作
+
+1. superuserの作成は次のコマンド
 
 ```
 python manage.py createsuperuser
 ```
 
-2. superuserの名前を聞いてきますので、名前を入力します。（忘れないように！）
-
-3. メールアドレスは不要そのままEnter　
-
+2. superuserの名前を聞いてきますので名前を入力します。（忘れないように！）
+3. メールアドレスは不要。そのままEnter　
 4. パスワードは好みのパスワードを指定します。（忘れないように！）
+Superuser created successfully.と出ればOK
 
-5. admin.pyを次のように編集
+
+
+VS-Codeに戻って、admin.pyを次のように編集
 
 ```
 from django.contrib import admin
@@ -527,6 +533,8 @@ admin.site.register(TodoModel)
 これでデータ入力が可能になります。
 
 ### サーバーの稼働
+
+ターミナルまたはパワーシェルで次の操作
 
 runserverを稼働させて、admin画面に入りエラーが出ないか確認します。
 
@@ -561,6 +569,8 @@ superuserで作成したユーザーとパスワードで認証します。
 ### サーバーを停止
 
 ctrl + c キーでサーバーを停止
+
+Windowsの場合も ctrl + c で停止します。
 
 
 
