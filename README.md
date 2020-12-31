@@ -1157,11 +1157,76 @@ git push origin --all
 
 HerokuでのデータベースはPostgreSQLを使います。
 
-事前に配布するファイルは Procfile, requirements.txt, runtime.txtの３種類です。
+### Herokuのデプロイに必要なパッケージ導入
 
-**事前に用意したファイルをTODOPROJECTに置きます。**
+1. TODOPROJECTフォルダにcdで移動しておきます
+2. dj-database-urlのインストール
+   PostgreSQLデータベース情報を取得するために必要です。 必要に応じてインストールします。HerokuではPostgreSQLを使用しますので、requirements.txtにインストール情報は記述しておきます。
 
-Procfile, requirements.txt, runtime.txtが無いとHerokuにデプロイできませんので注意。
+```
+pip install dj-database-url gunicorn whitenoise
+```
+
+1. psycopgのインストール（Macはエラーになる） これもPostgreSQLデータベースで必要になります。今回インストールの必要はありませんが、requirements.txtにインストール情報は記述しておきます。
+
+   ```
+   pip install psycopg2
+   ```
+
+2. **MACでpsycopg2のインストールでエラーが出た場合**、 psycopg2-binaryのインストール
+
+```
+pip install psycopg2-binary
+```
+
+## `requirements.txt`ファイル作成
+
+1. TODOPROJECTフォルダ直下に、`requirements.txt`ファイルを作成しますが、以下のコマンドで作成することができます。
+
+```
+pip freeze > requirements.txt
+```
+
+1. 実行後出来た `requirements.txt` の内容の例
+
+```
+asgiref==3.2.10
+dj-database-url==0.5.0
+Django==3.1.1
+gunicorn==20.0.4
+psycopg2-binary==2.8.6
+pytz==2020.1
+sqlparse==0.3.1
+whitenoise==5.2.0
+```
+
+### Procfile
+
+テキストエディタで`TODOPROJECT`ディレクトリ下に`Procfile`というファイルを作成次の行を記述します。`Procfile`に拡張子はありません。
+
+プロジェクト名を変更している場合は`todoproject.wsgi`が変わりますので注意してください。
+
+Procfile記述内容
+
+```
+web: gunicorn todoproject.wsgi --log-file -
+```
+
+
+
+## `runtime.txt`ファイル
+
+1. アプリを作成したPCのPythonのバージョンを確認
+
+   ```
+   python -V
+   ```
+
+2. テキストエディタで`TODOPROJECT`ディレクトリ下に`runtime.txt`というファイルを作成して、Pythonのバージョンを次のテキストを例に書き込む。
+
+   ```
+    python-3.9.0
+   ```
 
 ## settings.pyの編集
 
@@ -1366,5 +1431,131 @@ git commit
 git push origin HEAD
 ```
 
+## Herokuへデプロイ
 
+事前にHerokuのアカウントを取得しておきます。
 
+また、Heroku CLIをインストールしておきます。
+
+### Heroku CLIをインストール
+
+#### MAC の場合
+
+ Home brewでインストールします。HomebrewはMACのパッケージマネージャーです。これをインストールしておけばPythonも複数のバージョンをインストールできるようになります。
+
+まずはHome brewをインストールします。
+
+https://brew.sh/index_jaHomebrewのページからインストールのところに表示されているコードをターミナルで実行します。
+
+```
+ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Homebrewがインストールされたら以下コマンドでHeroku CLIをインストールします。
+
+```
+brew install heroku/brew/heroku
+```
+
+#### Windowsの場合 
+
+次のURLのページからWindows用のインストーラーをダウンロードしてインストールします。
+
+ インストーラーのチェックはそのままチェックが入った状態でNextボタンで進みインストールします。
+
+`https://devcenter.heroku.com/articles/heroku-cli`
+
+インストール終了したらパワーシェルまたはターミナルを再起動
+
+### Herokuにログイン
+
+1. 次にこのコマンドを実行して、自分のコンピュータでHerokuアカウントを認証します。
+
+```
+heroku login
+```
+
+1. heroku: Press any key to open up the browser to login or q to exit: と表示されるので何かキーを押すとHerokuのページが立ち上がりますので認証します。
+
+### Webアプリケーション名をつける
+
+Webアプリを [アプリ名].herokuapp.com で公開しますので、他の誰も取得していない名前を選ぶ必要があります。名前に使える文字の種類は、英数小文字とダッシュ( - )だけです。（大文字は使えない）
+
+1. 名前を考えたら次のコマンドを実行します。
+
+```
+heroku create todo-lesson
+```
+
+ 
+
+## PostgreSQLの準備
+
+1. Herokuのダッシュボードに入ります。
+2. グローバルナビの「Overview」を選択します。
+3. 「Installed add-ons」が左側にあります。
+4. 「Installed add-ons」のConfigure Add-onsを選択します。
+5. Add-onsのサーチボックスにPostgresと入力すると「Heroku Postgres」が表示されるので選択します。
+6. 出てきたBoxでplan nameがにHobby Dev となってFreeとなっていることを確認します。
+7. Submit Order Formをクリック
+8. グローバルナビの「Setting」を確認します。
+9. Config Varsのところにある「Reveal Config Vars」をクリックします。
+10. DATABASE_URLにPostgreSQLの情報が入っていることを確認します。
+
+### SECRET_KEYの設定
+
+HerokuのダッシュボードのsettingでConfig Varsを選択してSECRET_KEYの設定を行います。
+
+1. KEYに`SECRET_KEY_TODO`と記述
+2. VALUEにシークレットキーの値を貼り付けます。値はクオートで囲みます。
+
+### DISABLE_COLLECTSTATIC
+
+1. ログインしたHEROKUページから該当アプリを選択
+2. ダッシュボードのsettingタブを選択
+3. Config Varsを選択
+4. キーに　`DISABLE_COLLECTSTATIC` をセット
+5. 値に `1` をセット
+6. Addボタンをクリック
+
+## Herokuへデプロイ
+
+デプロイにはGitのpushを使います。
+
+1. `heroku create` コマンドを実行したときに、あなたのリポジトリにHerokuのリモートサーバーが自動的に追加されています。
+2. 次のコマンドを実行してpushする先をgitに登録
+
+```
+heroku git:remote -a アプリ名
+```
+
+1. Herokuにデプロイコマンド **Pushする前にaddとcommitやらないとダメ！**
+
+```
+git push heroku master
+```
+
+現在、自分がチェックアウトして作業しているブランチがmaster以外で、たとえばmainブランチで作業している場合は、次のコマンドをいれる。
+
+```
+pushを実行するコマンド
+git push heroku main:master
+```
+
+### Heroku上でmigrateが必要
+
+1. データベースの設定が終了したら、migrateします。
+
+```
+heroku run python manage.py migrate
+```
+
+### superuserの作成
+
+1. superuserは次のコマンドです。
+
+```
+heroku run python manage.py createsuperuser
+```
+
+名前、パスワードを事前に準備しておきましょう。メールアドレスは何も入力せずに通ります。
