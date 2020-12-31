@@ -602,6 +602,201 @@ git push origin --all
 
 
 
+## ページ表示の仕組み
+
+### Topページの作成
+
+#### ルーティング設定
+
+VS-Codeで todo/urls.py の編集
+
+1. from import文に`TodoList`を追加、そして todoを削除
+
+2. urlpatternsの`path('test/', todo)`を削除
+
+3. urlpatternsに`path('', TodoList.as_view(), name='list'),`を追加
+
+```
+from django.urls import path
+from .views import TodoList
+
+
+urlpatterns = [
+
+    path('', TodoList.as_view(), name='list'),
+
+]
+```
+
+
+
+#### views.pyでクラス定義
+
+VS-Codeで views.pyの編集
+
+1. import文の変更
+
+2. def todo(request):関数の定義を削除(仮のHello!を削除)
+
+3. class TodoList(ListView):定義
+
+```
+from django.shortcuts import render, redirect
+from django.db import IntegrityError
+from django.views.generic import ListView
+from .models import TodoModel
+from django.http import HttpResponse
+
+class TodoList(ListView):
+    template_name = 'index.html'
+    model = TodoModel
+```
+
+### base.html作成
+
+VS-Codeで base.htmlを新規作成します。
+
+base.htmlはベースになるテンプレートです。
+
+CSSやJavaScriptのリンクなどこのテンプレートで指定します。
+
+今回はCSSやJavaSCriptはBootstrapが提供するネット上のデータとリンクさせます。
+
+```
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <title>TodoList</title>
+</head>
+
+<body>
+    {% block header %} {% endblock header %}
+    <div class="container">
+        {% block content %} {% endblock content %}
+    </div>
+    <!-- Footer -->
+    <footer class="text-center">
+        <span>Copyright &copy; Python Start Lab.</span>
+    </footer>
+    <!-- End of Footer -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
+```
+
+### index.html作成
+
+VS-Codeで index.htmlを新規作成します。
+
+index.htmlはTopページになるテンプレートです。
+
+```
+{% extends 'base.html' %} {% block header %}
+<div>
+    <h1>TodoList</h1>
+    <p>This is a simple TodoList.</p>
+</div>
+{% endblock header %} {% block content %} {% for item in object_list %}
+<div>
+    <div>
+        <p>{{ item.title }}</p>
+        <p>期日：{{ item.duedate }}</p>
+        <p>
+            <a>詳細</a>
+            <a>編集</a>
+            <a>削除</a>
+        </p>
+    </div>
+</div>
+{% endfor %} {% endblock content %}
+```
+
+### サーバーの稼働
+
+ここで一旦表示の確認をします。
+
+runserverを稼働させます。
+
+```
+python manage.py runserver
+```
+
+base.htmlの一部にレイアウト用のCSSが設定されていますが、ほとんど素っ気ない表示が確認できます。
+
+けれども、データベースに入力した内容は正しく表示されたことが確認できます。
+
+
+
+### CSS設定後のindex.html
+
+VS-Codeで index.htmlを以下内容に変更します。
+
+タグ自体の変更はありませんが、タグにBootstrapに対応したクラス名を指定した内容です。
+
+```
+{% extends 'base.html' %} {% block header %}
+<div class="jumbotron text-center">
+    <h1>TodoList</h1>
+    <p class="lead">This is a simple TodoList.</p>
+</div>
+{% endblock header %} {% block content %} {% for item in object_list %}
+<div class="card" style="margin-bottom:20px;">
+    <div class="card-body">
+        <p>{{ item.title }}</p>
+        <p>期日：{{ item.duedate }}</p>
+        <p>
+            <a class="btn btn-primary btn-sm" href="" role="button">詳細</a>
+            <a class="btn btn-success btn-sm" href="" role="button">編集</a>
+            <a class="btn btn-danger btn-sm" href="" role="button">削除</a>
+        </p>
+    </div>
+</div>
+{% endfor %} {% endblock content %}
+```
+
+クラス名を追加しただけで驚くほど綺麗になったと思います。
+
+
+
+### Git 「no3_todo」　branch作成
+
+```
+git add .
+```
+
+```
+git commit
+```
+
+```
+git checkout -b no3_todo
+```
+
+pushが終わったらmainにブランチを戻します。
+
+```
+git checkout master
+```
+
+全てのローカルリポジトリをpush
+
+```
+git push origin --all
+```
+
 
 
 
