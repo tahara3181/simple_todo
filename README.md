@@ -974,7 +974,7 @@ class TodoDelete(DeleteView):
  
 ```
 
-### 削除ボタンのリンク作成
+#### 削除ボタンのリンク作成
 
 index.htmlの削除ボタンのリンク設定を入れます。
 
@@ -982,7 +982,7 @@ index.htmlの削除ボタンのリンク設定を入れます。
 <a class="btn btn-danger btn-sm" href="{% url 'delete' item.pk %}" role="button">削除</a>
 ```
 
-### 削除用テンプレート
+#### 削除用テンプレート
 
 VS-Codeでtemplates/delete.htmlの新規作成
 
@@ -1021,6 +1021,124 @@ python manage.py runserver
 git add .
 git commit
 git checkout -b no5_todo
+```
+
+pushが終わったらmainにブランチを戻します。
+
+```
+git checkout master
+```
+
+全てのローカルリポジトリをpushする方法
+
+```
+git push origin --all
+```
+
+### 更新画面の作成
+
+#### ルーティング設定
+
+VS-Codeで編集 todo/urls.py の編集
+
+```
+from django.urls import path
+from .views import TodoList, TodoDetail, TodoDelete, TodoUpdate
+ 
+urlpatterns = [
+    path('', TodoList.as_view(), name='list'),
+    path('detail/<int:pk>', TodoDetail.as_view(), name='detail'),
+    path('delete/<int:pk>', TodoDelete.as_view(), name='delete'),
+    path('update/<int:pk>', TodoUpdate.as_view(), name='update')
+]
+```
+
+
+
+#### views.pyでクラス定義
+
+VS-Codeで編集 todo/views.py の編集
+
+```
+from django.shortcuts import render, redirect
+from django.db import IntegrityError
+from django.views.generic import ListView, DetailView, DeleteView, UpdateView
+from .models import TodoModel
+from django.http import HttpResponse
+from django.urls import reverse_lazy
+ 
+ 
+class TodoList(ListView):
+    template_name = 'index.html'
+    model = TodoModel
+ 
+ 
+class TodoDetail(DetailView):
+    template_name = 'detail.html'
+    model = TodoModel
+ 
+ 
+class TodoDelete(DeleteView):
+    template_name = 'delete.html'
+    model = TodoModel
+    success_url = reverse_lazy('list')
+ 
+ 
+class TodoUpdate(UpdateView):
+    template_name = 'update.html'
+    model = TodoModel
+    fields = ('title', 'memo', 'duedate')
+    success_url = reverse_lazy('list')
+
+```
+
+#### updateボタンのリンク作成
+
+index.htmlの編集ボタンのリンク設定を入れます。
+
+```
+<a class="btn btn-success btn-sm" href="{% url 'update' item.pk %}" role="button">編集</a>
+```
+
+#### updateテンプレート
+
+VS-Codeでtemplates/update.htmlの新規作成
+
+update.htmlを新規作成して以下コードを記述
+
+```
+{% extends 'base.html' %} {% block header %}
+<div class="jumbotron text-center">
+    <h1 class="display-4"><a href="{% url 'list' %}">TodoList</a></h1>
+    <p class="lead">This is a simple TodoList.</p>
+</div>
+{% endblock header %} {% block content %}
+ 
+<form action="" method="POST">{% csrf_token %} {{ form.as_p }}
+    <input type="submit" value="更新">
+</form>
+<p class="text-center"><a class="btn btn-outline-primary" href="{% url 'list' %}" role="button">戻る</a></p>
+{% endblock content %}
+```
+
+### サーバーの稼働
+
+ここで一旦表示の確認をします。
+
+runserverを稼働させます。
+
+```
+python manage.py runserver
+```
+
+詳細画面の確認をします。
+
+### Git 「no6_todo」　branch作成
+
+```
+git add .
+git commit
+git checkout -b no6_todo
 ```
 
 pushが終わったらmainにブランチを戻します。

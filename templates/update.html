@@ -1,0 +1,12 @@
+{% extends 'base.html' %} {% block header %}
+<div class="jumbotron text-center">
+    <h1 class="display-4"><a href="{% url 'list' %}">TodoList</a></h1>
+    <p class="lead">This is a simple TodoList.</p>
+</div>
+{% endblock header %} {% block content %}
+
+<form action="" method="POST">{% csrf_token %} {{ form.as_p }}
+    <input type="submit" value="更新">
+</form>
+<p class="text-center"><a class="btn btn-outline-primary" href="{% url 'list' %}" role="button">戻る</a></p>
+{% endblock content %}
