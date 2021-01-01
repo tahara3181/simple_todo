@@ -98,11 +98,11 @@ python -m django --version
 
 ## TODOプロジェクト作成
 
-ターミナルまたはパワーシェルで次の操作
-
 1.  `venv` 仮想フォルダの中にプロジェクト用の新しいフォルダ「TODOPROJECT」を作成
 
-2. コマンドの `cd` でカレントディレクトリを `TODOPROJECT` フォルダに移動します。
+2. ターミナルまたはパワーシェルで次の操作
+
+   コマンドの `cd` でカレントディレクトリを `TODOPROJECT` フォルダに移動します。
 
    ```
    cd TODOPROJECT
@@ -333,16 +333,6 @@ STATICFILES_DIRS = [
     ├── urls.py
     └── wsgi.py
 ```
-
-## staticフォルダの準備
-
-staticフォルダにcssやjavascript、画像などの準備をします。
-
-今回はstatic.zipを展開してその内容を全てstaticフォルダに置きます。
-
-static.zip
-
-https://www.startlab-classroom.com/5/static.zip
 
 ### ルーティング　urls.pyの編集
 
