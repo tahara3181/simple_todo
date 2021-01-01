@@ -1009,11 +1009,19 @@ python manage.py runserver
 
 ```
 git add .
+```
+
+```
 git commit
+```
+
+no5_todoブランチを作成
+
+```
 git checkout -b no5_todo
 ```
 
-pushが終わったらmainにブランチを戻します。
+mainにブランチを戻します。
 
 ```
 git checkout master
@@ -1127,11 +1135,19 @@ python manage.py runserver
 
 ```
 git add .
+```
+
+```
 git commit
+```
+
+no6_todo branch作成
+
+```
 git checkout -b no6_todo
 ```
 
-pushが終わったらmainにブランチを戻します。
+mainにブランチを戻します。
 
 ```
 git checkout master
