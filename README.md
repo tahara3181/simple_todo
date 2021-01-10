@@ -104,9 +104,9 @@ python -m django --version
 
    コマンドの `cd` でカレントディレクトリを `TODOPROJECT` フォルダに移動します。
 
-   ```
-   cd TODOPROJECT
-   ```
+```
+cd TODOPROJECT
+```
 
 3. Djangoのプロジェクトを作成するコマンド
 
@@ -174,23 +174,23 @@ import os
 
 #### シークレットキーの設定
 
-1. シークレットキーの情報をコピーして保存(この記述はサンプルです。自分の本当の値をコピーすること)
+2. シークレットキーの情報をコピーして保存(この記述はサンプルです。自分の本当の値をコピーすること)
 
-   ```
-   SECRET_KEY = 'ei!mmcb3n(me^ww$&9xz3$r^xf+75_8^2x6_&38)^dti6338-t$=s'
-   ```
+```
+SECRET_KEY = 'tekitounaatai(m^^mw$&9xz3$r^^xf+75_8^^3x6_&38)^dti9999-t$=s'
+```
 
-2. シークレットキーの情報を環境変数に隠蔽
+3. シークレットキーの情報を環境変数に隠蔽
    環境変数の取り扱いは別途手順書を参照
 
 ```
 SECRET_KEY = os.environ.get('SECRET_KEY_TODO')
 ```
 
-3. MAC の場合、元々SECRET_KEYに記述されていた値をコピーして自分のPCの環境変数に貼り付け
+4. MAC の場合、元々SECRET_KEYに記述されていた値をコピーして自分のPCの環境変数に貼り付け
    ZSHの場合：.zshrcをエディタで開いて下記貼り付け
 
-   bashの場合：.bash_profileをエディタで開いて下記貼り付け
+bashの場合：.bash_profileをエディタで開いて下記貼り付け
 
 ```
 export SECRET_KEY_TODO='w0ni-ss@e13^v!dddwb59bug+g4h18-3h^*!sisden#bb@66+@ase'
@@ -203,26 +203,26 @@ export SECRET_KEY_TODO='w0ni-ss@e13^v!dddwb59bug+g4h18-3h^*!sisden#bb@66+@ase'
 source bin/activate
 ```
 
-4. Windowsの場合、システムの「環境変数を編集」からユーザー環境変数で新規を選ぶ
+5. Windowsの場合、システムの「環境変数を編集」からユーザー環境変数で新規を選ぶ
    変数名：SECRET_KEY_TODO
    変数値：'w0ni-ss@e13^v!dddwb59bug+g4h18-3h^*!sisden#bb@66+@ase'
 
-   その後、コマンド `deactivate` で仮想環境を出てから**PowerShellを再起動**
-   再び仮想環境に入って、cdで現在の階層まで戻る
+その後、コマンド `deactivate` で仮想環境を出てから**PowerShellを再起動**
+再び仮想環境に入って、cdで現在の階層まで戻る
 
-   Windowsのactivateコマンド
+Windowsのactivateコマンド
 
-   ```
-   Set-ExecutionPolicy RemoteSigned -Scope Process
-   ```
+```
+Set-ExecutionPolicy RemoteSigned -Scope Process
+```
 
-   実行ポリシーを聞かれたら、「Y」を入力してEnter
+実行ポリシーを聞かれたら、「Y」を入力してEnter
 
-   ```
-   Scripts\activate
-   ```
+```
+Scripts\activate
+```
 
-   
+
 
 #### アプリの指定
 
@@ -424,11 +424,7 @@ git commit
 ```
 
 ```
-git checkout -b no1_todo
-```
-
-```
-git checkout master
+git branch no1_todo
 ```
 
 ### GitHubにpush
@@ -575,11 +571,7 @@ git commit
 ```
 
 ```
-git checkout -b no2_todo
-```
-
-```
-git checkout master
+git branch no2_todo
 ```
 
 ### GitHubにpush
@@ -782,13 +774,7 @@ git commit
 ```
 
 ```
-git checkout -b no3_todo
-```
-
-pushが終わったらmainにブランチを戻します。
-
-```
-git checkout master
+git branch no3_todo
 ```
 
 全てのローカルリポジトリをpush
@@ -903,14 +889,9 @@ git commit
 ```
 
 ```
-git checkout -b no4_todo
+git branch no4_todo
 ```
 
-pushが終わったらmainにブランチを戻します。
-
-```
-git checkout master
-```
 全てのローカルリポジトリをpush
 
 ```
@@ -1018,13 +999,7 @@ git commit
 no5_todoブランチを作成
 
 ```
-git checkout -b no5_todo
-```
-
-mainにブランチを戻します。
-
-```
-git checkout master
+git branch no5_todo
 ```
 
 全てのローカルリポジトリをpushする方法
@@ -1144,13 +1119,7 @@ git commit
 no6_todo branch作成
 
 ```
-git checkout -b no6_todo
-```
-
-mainにブランチを戻します。
-
-```
-git checkout master
+git branch no6_todo
 ```
 
 全てのローカルリポジトリをpushする方法
@@ -1173,13 +1142,13 @@ HerokuでのデータベースはPostgreSQLを使います。
 pip install dj-database-url gunicorn whitenoise
 ```
 
-1. psycopgのインストール（Macはエラーになる） これもPostgreSQLデータベースで必要になります。今回インストールの必要はありませんが、requirements.txtにインストール情報は記述しておきます。
+3. psycopgのインストール（Macはエラーになる） これもPostgreSQLデータベースで必要になります。今回インストールの必要はありませんが、requirements.txtにインストール情報は記述しておきます。
 
-   ```
-   pip install psycopg2
-   ```
+```
+pip install psycopg2
+```
 
-2. **MACでpsycopg2のインストールでエラーが出た場合**、 psycopg2-binaryのインストール
+4. **MACでpsycopg2のインストールでエラーが出た場合**、 psycopg2-binaryのインストール
 
 ```
 pip install psycopg2-binary
@@ -1193,7 +1162,7 @@ pip install psycopg2-binary
 pip freeze > requirements.txt
 ```
 
-1. 実行後出来た `requirements.txt` の内容の例
+2. 実行後出来た `requirements.txt` の内容の例
 
 ```
 asgiref==3.2.10
