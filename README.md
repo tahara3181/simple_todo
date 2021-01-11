@@ -127,39 +127,6 @@ python manage.py startapp todo
 
 
 
-## Gitの作成
-
-「TODOPROJECT」フォルダ内をGit管理します。
-
-TODOPROJECTフォルダ内に新規で` .gitignore` ファイルを作成して以下記述
-
-GitHubにpushする場合、static/はpushしないように.gitignoreファイルに記述します。
-
-ただし、HEROKUにpushする場合はこの記述を削除します。
-
-```
-*.pyc
-__pycache__/
-db.sqlite3
-static/
-```
-
-以下コマンドを実行
-
-ターミナルまたはパワーシェルで次の操作
-
-```
-git init
-```
-
-```
-git add .
-```
-
-```
-git commit
-```
-
 ## Djangoの設定
 
 ### settings.pyの変更
@@ -407,13 +374,30 @@ http://127.0.0.1:8000/test/
 
 ctrl + c キーでサーバーを停止
 
-### Gitブランチ作成
+## Gitの作成
 
-ここまでの内容を新しいブランチにします。ブランチ名は「no1_todo」とします。
+「TODOPROJECT」フォルダ内をGit管理します。
 
-Gitコマンドは以下
+TODOPROJECTフォルダ内に新規で` .gitignore` ファイルを作成して以下記述
+
+GitHubにpushする場合、static/はpushしないように.gitignoreファイルに記述します。
+
+ただし、HEROKUにpushする場合はこの記述を削除します。
+
+```
+*.pyc
+__pycache__/
+db.sqlite3
+static/
+```
+
+以下コマンドを実行
 
 ターミナルまたはパワーシェルで次の操作
+
+```
+git init
+```
 
 ```
 git add .
