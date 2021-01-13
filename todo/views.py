@@ -1,8 +1,6 @@
-from django.shortcuts import render, redirect
 from django.db import IntegrityError
 from django.views.generic import ListView, DetailView, DeleteView, UpdateView
 from .models import TodoModel
-from django.http import HttpResponse
 from django.urls import reverse_lazy
 
 
