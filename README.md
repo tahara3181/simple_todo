@@ -276,8 +276,10 @@ STATICFILES_DIRS = [
 
 ### 現在のフォルダの状態
 
+TODOPROJECTフォルダの構成
+
 ```
-.
+TODOPROJECT
 ├── manage.py
 ├── static
 ├── templates
@@ -607,11 +609,9 @@ VS-Codeで views.pyの編集
 3. class TodoList(ListView):定義
 
 ```
-from django.shortcuts import render, redirect
 from django.db import IntegrityError
 from django.views.generic import ListView
 from .models import TodoModel
-from django.http import HttpResponse
 
 class TodoList(ListView):
     template_name = 'index.html'
@@ -795,11 +795,10 @@ VS-Codeで編集 todo/views.py の編集
 2. class TodoDetail(DetailView):定義
 
 ```
-from django.shortcuts import render, redirect
 from django.db import IntegrityError
 from django.views.generic import ListView, DetailView
 from .models import TodoModel
-from django.http import HttpResponse
+
  
  
 class TodoList(ListView):
@@ -904,11 +903,9 @@ urlpatterns = [
 VS-Codeで編集 todo/views.py の編集
 
 ```
-from django.shortcuts import render, redirect
 from django.db import IntegrityError
 from django.views.generic import ListView, DetailView, DeleteView
 from .models import TodoModel
-from django.http import HttpResponse
 from django.urls import reverse_lazy
  
  
@@ -1017,11 +1014,9 @@ urlpatterns = [
 VS-Codeで編集 todo/views.py の編集
 
 ```
-from django.shortcuts import render, redirect
 from django.db import IntegrityError
 from django.views.generic import ListView, DetailView, DeleteView, UpdateView
 from .models import TodoModel
-from django.http import HttpResponse
 from django.urls import reverse_lazy
  
  
