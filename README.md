@@ -1399,7 +1399,9 @@ git push origin HEAD
 
 まずはHome brewをインストールします。
 
-https://brew.sh/index_jaHomebrewのページからインストールのところに表示されているコードをターミナルで実行します。
+https://brew.sh/index_jaHomebrew
+
+のページからインストールのところに表示されているコードをターミナルで実行します。
 
 ```
  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
